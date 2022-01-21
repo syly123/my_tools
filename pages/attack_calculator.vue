@@ -1,7 +1,7 @@
 <template>
   <!-- attack_calculator -->
   <div>
-    <h2>tatsuhikoのエンパ計算機</h2>
+    <h2>tatsuhikoのエンパ計算機だよ</h2>
     <h1>攻撃側</h1>
     <p v-for="soldier in attack_soldiers" :key="soldier.power[3]">
       {{ soldier.name }}→<input v-model="soldier.num[0]" />体
