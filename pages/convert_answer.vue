@@ -8,7 +8,11 @@
       {{ hukugou_str }}
     </div> -->
 
-    <textarea v-model="sentence" onfocus="this.select();" />
+    <textarea
+      v-model="sentence"
+      onfocus="this.select();"
+      style="width: 400px; height: 300px"
+    />
     <p>↑ここに暗号化前の解答を貼り付ける</p>
   </div>
 </template>
