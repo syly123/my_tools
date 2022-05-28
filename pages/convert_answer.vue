@@ -9,6 +9,7 @@
     </div> -->
 
     <textarea v-model="sentence" />
+    <p>↑ここに暗号化前の解答を貼り付ける</p>
   </div>
 </template>
 <script>
@@ -70,11 +71,7 @@ export default {
   },
   computed: {
     sentence_show: function () {
-      return this.angouka(this.sentence);
-    },
-
-    hukugou_str: function () {
-      return this.hukugou(this.sentence_show);
+      return this.angouka(this.angouka(this.sentence));
     },
   },
 
