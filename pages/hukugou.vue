@@ -1,19 +1,14 @@
 <template>
   <div class="box">
     <div style="margin: 50px 40% 50px; font-size: 80%">
-      <textarea id="copyTarget" type="text" :value="sentence_show" readonly />
+      <textarea id="copyTarget" type="text" :value="hukugou_str" readonly />
       <button @click="copyToClipboard()">コピー</button>
     </div>
-    <!-- <div style="margin: 0px 40% 30px; font-size: 80%">
+    <div style="margin: 0px 40% 30px; font-size: 80%">
       {{ hukugou_str }}
-    </div> -->
+    </div>
 
-    <textarea
-      v-model="sentence"
-      onfocus="this.select();"
-      style="width: 400px; height: 300px"
-    />
-    <p>↑ここに暗号化前の解答を貼り付ける</p>
+    <textarea v-model="angou" />
   </div>
 </template>
 <script>
@@ -21,6 +16,7 @@ export default {
   data() {
     return {
       sentence: "",
+      angou: "",
       count: 0,
     };
   },
@@ -47,24 +43,27 @@ export default {
       //alert("コピーできました！ : " + copyTarget.value);
     },
     angouka: function (str) {
-      let res = "";
       if (this.sentence == "") {
         return "";
       }
+      return "py" + btoa(unescape(encodeURIComponent(str)));
+    },
+    hukugou: function (str) {
+      //   str = str.slice(2);
+      //   return decodeURIComponent(escape(atob(str)));
+      let res = "";
       str = str.split(/\n/);
-      console.log("str:");
       console.log("str:", str);
       str.forEach((one_str) => {
+        one_str = one_str.slice(2);
         console.log(one_str);
-        res += "py" + btoa(unescape(encodeURIComponent(one_str))) + "\n";
+        res +=
+          decodeURIComponent(escape(atob(one_str))).replace(/\r?\n/g, "") +
+          "\n";
       });
       console.log("res:", res);
 
       return res;
-    },
-    hukugou: function (str) {
-      str = str.slice(2);
-      return decodeURIComponent(escape(atob(str)));
     },
     keyCheck: function (event) {
       if (event.defaultPrevented) {
@@ -86,6 +85,21 @@ export default {
   computed: {
     sentence_show: function () {
       return this.angouka(this.angouka(this.sentence));
+    },
+
+    hukugou_str: function () {
+      //   let res = "";
+      //   this.angou = this.angou.split(/\n/);
+      //   console.log(this.angou);
+      //   this.angou.forEach((one_str) => {
+      //     one_str = one_str.slice(2);
+      //     console.log(one_str);
+      //     res += decodeURIComponent(escape(atob(one_str)));
+      //   });
+      //   console.log(res);
+
+      //   return res;
+      return this.hukugou(this.hukugou(this.angou));
     },
   },
 

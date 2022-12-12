@@ -2,90 +2,14 @@
   <center>
     <div>
       <input type="file" @change="loadCsvFile" />
-      <div>
-        <button @click="page--">ー</button>
-        {{ page }}
-        <button @click="page++">＋</button>
-      </div>
-
-      <table border="1">
-        <div
-          v-for="(worker, index) in tweets_should_load"
-          :key="index"
-          style="margin-bottom: 30px"
-        >
-          <div @click="moveLink(worker[linkIndex])">
-            {{
-              ShowInOneTime * page + index
-            }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🔁{{
-              Number(worker[retweetsCountIndex]).toLocaleString()
-            }}
-            ♥{{ Number(worker[likesCountIndex]).toLocaleString() }} ____
-            {{ worker[timeIndex] }}
-          </div>
-          <textarea
-            style="width: 600px; height: 50px"
-            :value="worker[tweetIndex]"
-            onfocus="this.select();"
-          />
-          <br />
-          <textarea
-            @dblclick="
-              moveLink(
-                `https://twitter.com/search?q=conversation_id%3A${worker[
-                  linkIndex
-                ]
-                  .split('/')
-                  .pop()}%20include%3Areplies%20include%3Aquote%20lang%3Aja&src=typed_query`
-              )
-            "
-            :value="worker[jaIndex]"
-            style="width: 600px; height: 35px"
-          ></textarea>
-
-          <div>
-            <!-- <a :href="worker[photoIndex]" target="_blank">画像</a> -->
-            <img
-              @click="moveLink(worker[photoIndex])"
-              v-if="worker[photoIndex] != ''"
-              :src="worker[photoIndex]"
-            />
-          </div>
-        </div>
-      </table>
-      <div>
-        <button @click="page--">ー</button>
-        current page :{{ page }}
-        <button
-          @click="
-            page++;
-            scrollTop();
-          "
-        >
-          ＋
-        </button>
-      </div>
     </div>
-    <p>ツイート番号の段をクリックでツイートページに飛ぶ</p>
-    <p>和訳欄をダブルクリックで日本語のみのリプライ一覧に飛ぶ</p>
   </center>
 </template>
 <script>
 export default {
   data() {
     return {
-      message: "",
-      workers: [],
-      page: 0,
-      tweetIndex: 0,
-      photoIndex: 0,
-      linkIndex: 0,
-      likesCountIndex: 0,
-      retweetsCountIndex: 0,
-      timeIndex: 0,
-      jaIndex: 0,
-      ShowInOneTime: 20,
-      viewType: "normal",
+      level: 0,
     };
   },
   methods: {
@@ -135,7 +59,6 @@ export default {
         vm.photoIndex = header.indexOf("photos");
         vm.linkIndex = header.indexOf("link");
         vm.jaIndex = header.indexOf("和訳");
-        vm.timeIndex = header.indexOf("JST");
         lines.shift(); //csvのheader削除
         console.log(header);
         let linesArr = [];
@@ -180,7 +103,7 @@ export default {
     },
   },
   computed: {
-    tweets_should_load_reversed: function () {
+    tweets_should_load: function () {
       let len = 586;
       return this.workers
         .slice(
@@ -188,17 +111,6 @@ export default {
           len - this.page * this.ShowInOneTime
         )
         .reverse();
-    },
-    tweets_should_load_nomal: function () {
-      return this.workers.slice(
-        this.page * this.ShowInOneTime,
-        (this.page + 1) * this.ShowInOneTime
-      );
-    },
-    tweets_should_load: function () {
-      return this.viewType == "normal"
-        ? this.tweets_should_load_nomal
-        : this.tweets_should_load_reversed;
     },
   },
   created: function () {
