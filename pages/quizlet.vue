@@ -1,8 +1,8 @@
 <template>
   <div class="box">
     <input type="file" @change="loadHtmlFile" />
-    <button @click="is_shuffled = !is_shuffled">シャッフル</button>
-    {{ is_shuffled ? "オン" : "オフ" }}
+    <button @click="shuffled = !shuffled">シャッフル</button>
+    {{ shuffled ? "オン" : "オフ" }}
     <div v-html="question[index]" style="margin: 1% 0"></div>
     <button @click="addCount(-1)">←</button>
     <button @click="answer_visible = !answer_visible">Check Answer</button>
@@ -46,7 +46,7 @@ export default {
       answer: [],
       question: [],
       answer_visible: false,
-      is_shuffled: false,
+      shuffled: false,
       // question2: "",
       count: 0,
       index: 0,
@@ -64,7 +64,7 @@ export default {
 
     addCount: function (num) {
       this.count += num;
-      if (this.is_shuffled) {
+      if (this.shuffled) {
         this.index = this.shuffledIndex[this.count];
       } else {
         this.index = this.count;
