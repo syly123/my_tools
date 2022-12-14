@@ -83,6 +83,7 @@ export default {
           this.addCount(1);
           break;
         case " ":
+        case "ArrowDown":
           this.answer_visible = !this.answer_visible;
           break;
         default:
