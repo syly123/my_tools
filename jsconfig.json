@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "~~/*": ["./*"],
+      "@@/*": ["./*"]
+    }
+  },
+  "include": ["pages", "store", "layout", "component"],
+  "exclude": ["node_modules", ".nuxt", "dist", "assets", "functions"]
+}
